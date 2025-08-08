@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Love Timeline - Happy Birthday!</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        color: white;
+      }
+
+      .timeline-container {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        padding: 40px 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+        z-index: 100;
+      }
+
+      .main-title {
+        font-size: 4rem;
+        font-weight: 300;
+        margin-bottom: 15px;
+        background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientFlow 4s ease-in-out infinite;
+        text-shadow: none;
+      }
+
+      .subtitle {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        font-weight: 300;
+        letter-spacing: 2px;
+      }
+
+      .timeline-river {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 0;
+      }
+
+      .river-path {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 8px;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.3) 0%,
+          rgba(255, 107, 107, 0.6) 25%,
+          rgba(72, 219, 251, 0.6) 50%,
+          rgba(254, 202, 87, 0.6) 75%,
+          rgba(255, 159, 243, 0.6) 100%
+        );
+        border-radius: 4px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        animation: riverFlow 8s ease-in-out infinite;
+      }
+
+      .memory-bubble {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin: 80px 0;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        opacity: 0;
+        animation: bubbleAppear 0.8s ease-out forwards;
+      }
+
+      .memory-bubble:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .memory-bubble:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .memory-bubble:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .memory-bubble:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .memory-bubble:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .memory-bubble:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .memory-bubble:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+      .memory-bubble:nth-child(8) {
+        animation-delay: 0.8s;
+      }
+      .memory-bubble:nth-child(9) {
+        animation-delay: 0.9s;
+      }
+      .memory-bubble:nth-child(10) {
+        animation-delay: 1s;
+      }
+      .memory-bubble:nth-child(11) {
+        animation-delay: 1.1s;
+      }
+      .memory-bubble:nth-child(12) {
+        animation-delay: 1.2s;
+      }
+      .memory-bubble:nth-child(13) {
+        animation-delay: 1.3s;
+      }
+      .memory-bubble:nth-child(14) {
+        animation-delay: 1.4s;
+      }
+      .memory-bubble:nth-child(15) {
+        animation-delay: 1.5s;
+      }
+      .memory-bubble:nth-child(16) {
+        animation-delay: 1.6s;
+      }
+      .memory-bubble:nth-child(17) {
+        animation-delay: 1.7s;
+      }
+      .memory-bubble:nth-child(18) {
+        animation-delay: 1.8s;
+      }
+      .memory-bubble:nth-child(19) {
+        animation-delay: 1.9s;
+      }
+      .memory-bubble:nth-child(20) {
+        animation-delay: 2s;
+      }
+      .memory-bubble:nth-child(21) {
+        animation-delay: 2.1s;
+      }
+      .memory-bubble:nth-child(22) {
+        animation-delay: 2.2s;
+      }
+      .memory-bubble:nth-child(23) {
+        animation-delay: 2.3s;
+      }
+      .memory-bubble:nth-child(24) {
+        animation-delay: 2.4s;
+      }
+
+      .memory-bubble.left {
+        flex-direction: row;
+        justify-content: flex-end;
+      }
+
+      .memory-bubble.right {
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+      }
+
+      .bubble-content {
+        width: 450px;
+        height: 280px;
+        margin: 0 60px;
+        perspective: 1000px;
+      }
+
+      .bubble-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-style: preserve-3d;
+      }
+
+      .memory-bubble:hover .bubble-inner {
+        transform: rotateY(180deg);
+      }
+
+      .bubble-front,
+      .bubble-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: all 0.4s ease;
+      }
+
+      .bubble-back {
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotateY(180deg);
+        padding: 20px;
+      }
+
+      .memory-bubble:hover .bubble-front,
+      .memory-bubble:hover .bubble-back {
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      }
+
+      .bubble-icon {
+        position: absolute;
+        top: 50%;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff6b6b, #feca57);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        transform: translateY(-50%);
+        transition: all 0.4s ease;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .memory-bubble.left .bubble-icon {
+        right: -100px;
+      }
+
+      .memory-bubble.right .bubble-icon {
+        left: -100px;
+      }
+
+      .memory-bubble:hover .bubble-icon {
+        transform: translateY(-50%) scale(1.2) rotate(10deg);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      }
+
+      .bubble-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #fff;
+      }
+
+      .bubble-date {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-bottom: 15px;
+        font-style: italic;
+      }
+
+      .bubble-description {
+        font-size: 1rem;
+        line-height: 1.6;
+        opacity: 0.9;
+      }
+
+      .bubble-connector {
+        position: absolute;
+        top: 50%;
+        width: 30px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.4);
+        transform: translateY(-50%);
+      }
+
+      .memory-bubble.left .bubble-connector {
+        right: -30px;
+      }
+
+      .memory-bubble.right .bubble-connector {
+        left: -30px;
+      }
+
+      .picture-placeholder {
+        width: 100%;
+        height: 180px;
+        background: linear-gradient(135deg, #ff6b6b, #feca57);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 15px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .picture-placeholder::before,
+      .bubble-back img {
+        object-fit: contain;
+      }
+
+      .picture-placeholder::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: photoShimmer 3s ease-in-out infinite;
+      }
+
+      .picture-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+
+      .picture-subtitle {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        color: #fff;
+        text-align: center;
+        font-style: italic;
+      }
+
+      .stats-panel {
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 20px;
+        text-align: center;
+        z-index: 1000;
+        animation: slideInRight 1s ease-out 2s both;
+      }
+
+      .stats-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #feca57, #ff6b6b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: block;
+      }
+
+      .stats-label {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-top: 5px;
+      }
+
+      .birthday-surprise {
+        position: fixed;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #ff6b6b, #ff9ff3);
+        padding: 20px 40px;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        color: white;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        animation: glow 2s ease-in-out infinite alternate;
+        z-index: 1000;
+      }
+
+      .birthday-surprise:hover {
+        transform: translateX(-50%) scale(1.1);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      .modal.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-content {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0.1)
+        );
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 30px;
+        padding: 50px;
+        max-width: 600px;
+        width: 90%;
+        text-align: center;
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+      }
+
+      .modal.active .modal-content {
+        transform: scale(1);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: white;
+        cursor: pointer;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+      }
+
+      .modal-close:hover {
+        opacity: 1;
+      }
+
+      .modal-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        font-size: 2.5rem;
+        font-weight: 300;
+        margin-bottom: 20px;
+        background: linear-gradient(45deg, #ff6b6b, #feca57);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .modal-text {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        opacity: 0.9;
+      }
+
+      .floating-particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        animation: float 8s linear infinite;
+      }
+
+      @keyframes gradientFlow {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      @keyframes riverFlow {
+        0%,
+        100% {
+          transform: translateX(-50%) scaleY(1);
+          opacity: 0.8;
+        }
+        50% {
+          transform: translateX(-50%) scaleY(1.1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes bubbleAppear {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes glow {
+        0% {
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2),
+            0 0 20px rgba(255, 107, 107, 0.3);
+        }
+        100% {
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2),
+            0 0 40px rgba(255, 107, 107, 0.6);
+        }
+      }
+
+      @keyframes photoShimmer {
+        100% {
+          left: 100%;
+        }
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) translateX(0px);
+          opacity: 0;
+        }
+        10%,
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100px) translateX(50px);
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-title {
+          font-size: 2.5rem;
+        }
+
+        .bubble-content {
+          width: 320px;
+          margin: 0 40px;
+          height: 250px;
+        }
+
+        .bubble-front,
+        .bubble-back {
+          padding: 20px;
+        }
+
+        .picture-placeholder {
+          height: 140px;
+          font-size: 2.5rem;
+          margin-bottom: 10px;
+        }
+
+        .bubble-icon {
+          width: 60px;
+          height: 60px;
+          font-size: 1.5rem;
+        }
+
+        .memory-bubble.left .bubble-icon {
+          right: -70px;
+        }
+
+        .memory-bubble.right .bubble-icon {
+          left: -70px;
+        }
+
+        .memory-bubble.left .bubble-connector {
+          right: -25px;
+        }
+
+        .memory-bubble.right .bubble-connector {
+          left: -25px;
+        }
+
+        .stats-panel {
+          top: 20px;
+          right: 20px;
+          padding: 15px;
+        }
+
+        .birthday-surprise {
+          padding: 15px 30px;
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="floating-particles"></div>
+
+    <div class="timeline-container">
+      <div class="header">
+        <h1 class="main-title">Happy birthday Durowaa</h1>
+        <p class="subtitle">24 beautiful memories for your 24th birthday</p>
+      </div>
+
+      <div class="stats-panel">
+        <span class="stats-number" id="viewedCount">0</span>
+        <div class="stats-label">memories explored</div>
+      </div>
+
+      <div class="timeline-river">
+        <div class="river-path"></div>
+
+        <div class="memory-bubble left" data-memory="0">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Jordan Year</h3>
+
+                <p class="bubble-description">
+                  A year ago we celebrated your 23rd birthday. A remarable
+                  milestone and your first birthday we celebrated together.
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/lastyear.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Jordan year</div>
+                <div class="picture-subtitle">
+                  The moment everything changed
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">1</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="1">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Where it all started</h3>
+                <p class="bubble-description">
+                  Let's take a trip down memory lane. Way back to the moment
+                  everything changed
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/artclass.JPG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">
+                  Okay this is a bit too back in time 😅
+                </div>
+                <div class="picture-subtitle">
+                  Let's skip a few years shall we...
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">2</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="2">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Our first date</h3>
+
+                <p class="bubble-description">
+                  Who knew this will be the beginning of our forever. This one
+                  moment defined what our next years will be.
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/firstdate.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Pornstar martini's for the win</div>
+                <div class="picture-subtitle">
+                  Many more pornstar martini's to come
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">3</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="3">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Foodies</h3>
+
+                <p class="bubble-description">
+                  Beyond pornstr martinis, one thing we always bond over is
+                  food. my fellow big back
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/big back.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Exhibit A</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">4</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="4">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">More Food</h3>
+
+                <p class="bubble-description">
+                  Food is our love language, and just as how the ingrdients in a
+                  meal may be different but work well together, so do we.
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/food.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Exhibit B</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">5</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="5">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Big backs fr</h3>
+
+                <p class="bubble-description">This is getting out of hand</p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/finishedfood.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Exhibit C</div>
+                <div class="picture-subtitle">
+                  See how you cleared the plate
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">6</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="6">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">My sweetie</h3>
+
+                <p class="bubble-description">
+                  Always have space for dessert. And just as sweet as dessert is
+                  to the tongue, so are you sweet to my soul
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/icecream.JPG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Exhibit D</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">7</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="7">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Big backs 4 life</h3>
+
+                <p class="bubble-description">
+                  Look at the consequences of our actions
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/stomach.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">How did we allow this</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">8</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="8">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Together</h3>
+
+                <p class="bubble-description">
+                  But in all things, what i love is our togetherness, regardless
+                  of the scenaria
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/IMG_4021.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Sleep Partner</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">9</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="9">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Getting Fit together</h3>
+
+                <p class="bubble-description">
+                  I mean after all that food, we did have to start getting fit
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/fit.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Fitness Partner</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">10</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="10">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Travel Together</h3>
+
+                <p class="bubble-description">
+                  I love touring the world with you,you are already my world,
+                  adn seeing the rest of the world with you feels complete
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/tour.JPG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Touring Partner</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">11</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="11">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Love that cannot be bought</h3>
+
+                <p class="bubble-description">
+                  The love i have for you is pricelss and is worth more than any
+                  and evrything in this world.
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/shopping.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Shop Together</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">12</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="12">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Art</h3>
+
+                <p class="bubble-description">
+                  God being the artist of this world, i know he took his time
+                  with you. You are perfect in my eyes and in my heart.
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/activity.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Art Together</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">13</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="13">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Seriousness</h3>
+
+                <p class="bubble-description">
+                  Even with all the playfulness and fun we have, when its time
+                  to lock in, we always amke sure to do so, and we do it
+                  together
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/nymun.JPG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Seriousness together😂</div>
+                <div class="picture-subtitle">
+                  So locked in i couldnt find a picture of us actually working
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">14</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="14">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">In the sky</h3>
+
+                <p class="bubble-description">
+                  No matter where we are, my love for you stays constant
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/flying.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Up in the sky</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">15</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="15">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">On the road</h3>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/passengerprincess.JPG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">On the road</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">16</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="16">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">In the Ocean</h3>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/beach.JPG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">In the ocean</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">17</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="17">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">On Facetime</h3>
+
+                <p class="bubble-description">
+                  No matter where, my love for you never quenches
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/IMG_2553.PNG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">On facetime</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">18</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="18">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Through the tough times</h3>
+
+                <p class="bubble-description">Tears may last the night...</p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/crying.JPG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">😅</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">19</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="19">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Through the good times</h3>
+
+                <p class="bubble-description">
+                  ...but joy cometh in the morning
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/mygrad.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">💗</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">20</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="20">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Sail Ship</h3>
+
+                <p class="bubble-description">
+                  I cant wait to sail the ship with you in this new age. To more
+                  adventures and quests in th epursuit of deepening our love
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/canoe.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Your captain, my queen</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">21</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="21">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">My mirror buddy</h3>
+
+                <p class="bubble-description">To more by force pictures</p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/anniversary.jpg"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">My love</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">22</div>
+        </div>
+
+        <div class="memory-bubble left" data-memory="22">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">To more adventures</h3>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/mallorca.JPG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">23</div>
+        </div>
+
+        <div class="memory-bubble right" data-memory="23">
+          <div class="bubble-content">
+            <div class="bubble-inner">
+              <div class="bubble-front">
+                <div class="bubble-connector"></div>
+                <h3 class="bubble-title">Most importnatly</h3>
+
+                <p class="bubble-description">
+                  You are the most amazing person in the world, i love you now
+                  and always
+                </p>
+              </div>
+              <div class="bubble-back">
+                <img
+                  src="images/brazil.JPG"
+                  style="
+                    width: 100%;
+                    height: 180px;
+                    object-fit: contain;
+                    border-radius: 15px;
+                  "
+                />
+                <div class="picture-title">Happy 24th Birthday!</div>
+                <div class="picture-subtitle">Here's to more memories</div>
+              </div>
+            </div>
+          </div>
+          <div class="bubble-icon">24</div>
+        </div>
+      </div>
+
+      <button class="birthday-surprise" onclick="showBirthdayModal()">
+        🎂 Birthday Note
+      </button>
+    </div>
+
+    <div class="modal" id="birthdayModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeBirthdayModal()">
+          &times;
+        </button>
+        <div class="modal-icon">🎉</div>
+        <h2 class="modal-title">Happy Birthday, Durowaa!</h2>
+        <p class="modal-text">
+          You are my greatest blessing, and I thank God for giving you another
+          beautiful year. Though we’re miles apart, my love for you grows
+          stronger every day. I miss you deeply and pray this year brings you
+          endless joy. Happy birthday, my love. ❤️
+        </p>
+      </div>
+    </div>
+
+    <script>
+      let viewedMemories = new Set();
+
+      // Track memory interactions
+      function trackMemoryView(index) {
+        if (!viewedMemories.has(index)) {
+          viewedMemories.add(index);
+          updateStats();
+        }
+      }
+
+      function updateStats() {
+        document.getElementById("viewedCount").textContent =
+          viewedMemories.size;
+      }
+
+      // Add interaction events
+      document.querySelectorAll(".memory-bubble").forEach((bubble, index) => {
+        bubble.addEventListener("mouseenter", () => {
+          trackMemoryView(index);
+        });
+
+        bubble.addEventListener("click", () => {
+          trackMemoryView(index);
+          // Add a subtle click effect
+          bubble.style.transform = "scale(0.95)";
+          setTimeout(() => {
+            bubble.style.transform = "scale(1)";
+          }, 150);
+        });
+      });
+
+      // Birthday modal functions
+      function showBirthdayModal() {
+        document.getElementById("birthdayModal").classList.add("active");
+      }
+
+      function closeBirthdayModal() {
+        document.getElementById("birthdayModal").classList.remove("active");
+      }
+
+      // Close modal with escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeBirthdayModal();
+        }
+      });
+
+      // Close modal by clicking background
+      document
+        .getElementById("birthdayModal")
+        .addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) {
+            closeBirthdayModal();
+          }
+        });
+
+      // Create floating particles
+      function createParticle() {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.animationDelay = Math.random() * 2 + "s";
+        particle.style.animationDuration = Math.random() * 4 + 6 + "s";
+
+        document.querySelector(".floating-particles").appendChild(particle);
+
+        setTimeout(() => particle.remove(), 10000);
+      }
+
+      // Create particles periodically
+      setInterval(createParticle, 500);
+
+      // Add some initial particles
+      for (let i = 0; i < 10; i++) {
+        setTimeout(createParticle, i * 200);
+      }
+    </script>
+  </body>
+</html>
